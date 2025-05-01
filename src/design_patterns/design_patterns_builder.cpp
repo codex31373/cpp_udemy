@@ -147,6 +147,7 @@ int main()
 }
 */
 
+
 //---------------------
 
 //------------
@@ -156,5 +157,33 @@ int main(const int argc, const char *argv[]) {
 
     std::cout << "\033[92m" << "\ndesign patterns\n"
               << "\033[0m" << std::endl;
+
+              HtmlBuilder htmlBuilder{};
+
+              auto initRoot =
+                  htmlBuilder.buildHtmlObject(HtmlElement{"root", "this_is_root"});
+              auto initRoot2 =
+                  htmlBuilder.buildHtmlObject(HtmlElement{"root2", "this_is_root2"});
+          
+              htmlBuilder.attachObj(&initRoot);
+              htmlBuilder.addChild("n1", "t1");
+              // you can't mix non-fluent and fluent interfaces
+              htmlBuilder.addChildFluent("n2", "t2")
+                  .addChildFluent("n3", "t3")
+                  .addChildFluent("n4", "t4");
+              htmlBuilder.addChildFluent2("n5", "t5")
+                  ->addChildFluent2("n6", "t6")
+                  ->addChildFluent2("n7", "t7");
+              htmlBuilder.deatachCurrentObj();
+          
+              initRoot.printRoot();
+              initRoot.printChilds();
+          
+              htmlBuilder.attachObj(&initRoot2);
+              htmlBuilder.addChild("n11", "t11");
+              htmlBuilder.deatachCurrentObj();
+          
+              initRoot2.printRoot();
+              initRoot2.printChilds();
     return 0;
 }
