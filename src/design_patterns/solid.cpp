@@ -127,16 +127,7 @@ void drawShape(Shape& shape) {
     shape.draw();
 }
 
-int main() {
-    Circle circle;
-    Rectangle rectangle;
 
-    // LSP in action: We can pass derived class objects to a function that expects the base class
-    drawShape(circle); // Output: Drawing a circle.
-    drawShape(rectangle); // Output: Drawing a rectangle.
-
-    return 0;
-}
 // ------------------------------------------- //
 
 // ---- interface segregation principle (ISP)
@@ -231,3 +222,15 @@ public:
     }
 };
 // ------------------------------------------- //
+
+
+int main() {
+    Circle circle;
+    Rectangle rectangle;
+
+    // LSP in action: We can pass derived class objects to a function that expects the base class
+    drawShape(circle); // Output: Drawing a circle.
+    drawShape(rectangle); // Output: Drawing a rectangle.
+
+    return 0;
+}
