@@ -217,7 +217,7 @@ class Research //high-level
 public:
     Research(RelationshipBrowser &browser){ //depends on abstraction
         for(const auto &child : browser.find_all_children_of("John")){ // "John" for example
-            std::cout << "John has a child called " << child->name << std::endl;
+            std::cout << "John has a child called " << child.name << std::endl;
         }
     }
 };
