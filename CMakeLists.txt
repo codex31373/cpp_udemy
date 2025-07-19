@@ -17,6 +17,7 @@ set(EXECUTABLES
     prototype
     singleton
     adapter
+    bridge
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
