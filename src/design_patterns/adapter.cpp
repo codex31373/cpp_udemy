@@ -59,6 +59,30 @@ public:
     }
 };
 
+// task
+/*
+struct SquareToRectangleAdapter : Rectangle
+{
+  SquareToRectangleAdapter(const Square& square)
+    : square_(square)
+  {
+  }
+
+  int width() const override
+  {
+    return square_.side;
+  }
+
+  int height() const override
+  {
+    return square_.side;
+  }
+
+private:
+  const Square& square_;
+};
+*/
+
 int main(const int argc,const char *argv[])
 {
     MallardDuck* mallardDuck = new MallardDuck();
