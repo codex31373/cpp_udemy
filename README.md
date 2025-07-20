@@ -22,7 +22,6 @@
 }
 
 
-
 mmcli -m 0 --command=AT+CFUN=1
 
 
