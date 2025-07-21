@@ -18,6 +18,7 @@ set(EXECUTABLES
     singleton
     adapter
     bridge
+    composite
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
