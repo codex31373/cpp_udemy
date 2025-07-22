@@ -1,4 +1,59 @@
 #include <iostream>
+#include <vector>
+
+// Component
+class Graphic {
+public:
+    virtual void render() = 0;
+    virtual ~Graphic() = default;
+};
+
+// Leaf
+class Point : public Graphic {
+private:
+    int x, y;
+public:
+    Point(int x, int y) : x(x), y(y) {}
+
+    void render() override {
+        std::cout << "Point(" << x << ", " << y << ")" << std::endl;
+    }
+};
+
+// Leaf
+class Line : public Graphic {
+private:
+    int x1, y1, x2, y2;
+public:
+    Line(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
+
+    void render() override {
+        std::cout << "Line(" << x1 << ", " << y1 << ", " << x2 << ", " << y2 << ")" << std::endl;
+    }
+};
+
+// Composite
+class CompositeGraphic : public Graphic {
+private:
+    std::vector<Graphic*> children;
+public:
+    void add(Graphic* graphic) {
+        children.push_back(graphic);
+    }
+
+    void render() override {
+        for (auto child : children) {
+            child->render();
+        }
+    }
+
+    ~CompositeGraphic() {
+        for (auto child : children) {
+            delete child;
+        }
+    }
+};
+
 
 //task
 /*
@@ -63,8 +118,21 @@ int main() {
 
 int main(const int argc,const char *argv[])
 {
-    std::cout << "\033[92m" << "\n20 July 2025\n"
+    std::cout << "\033[92m" << "\nComposite : 20 July 2025\n"
               << "\033[0m" << std::endl;
+
+    CompositeGraphic graphic;
+    graphic.add(new Point(1, 2));
+    graphic.add(new Line(3, 4, 5, 6));
+    graphic.add(new Point(7, 8));
+
+    CompositeGraphic* subGraphic = new CompositeGraphic{};
+    subGraphic->add(new Line(9, 10, 11, 12));
+    subGraphic->add(new Point(13, 14));
+
+    graphic.add(subGraphic);
+
+    graphic.render();
 
     return 0;
 }
