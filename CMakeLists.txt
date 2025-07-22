@@ -19,6 +19,7 @@ set(EXECUTABLES
     adapter
     bridge
     composite
+    decorator
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
