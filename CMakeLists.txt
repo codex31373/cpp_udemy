@@ -20,6 +20,7 @@ set(EXECUTABLES
     bridge
     composite
     decorator
+    facade
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
