@@ -21,6 +21,7 @@ set(EXECUTABLES
     composite
     decorator
     facade
+    flyweight
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
