@@ -22,6 +22,7 @@ set(EXECUTABLES
     decorator
     facade
     flyweight
+    proxy
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
