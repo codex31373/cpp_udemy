@@ -23,6 +23,7 @@ set(EXECUTABLES
     facade
     flyweight
     proxy
+    chain_of_responsibility
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
