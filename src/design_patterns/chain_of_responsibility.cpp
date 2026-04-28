@@ -10,54 +10,54 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 //Query type for different stats
-enum class QueryType
+enum class BrokerQueryType
 {
     attack,
     defense
 };
 
 //Query object passed through the chain
-struct Query
+struct BrokerQuery
 {
-    QueryType type;
+    BrokerQueryType type;
     int value;
 
-    Query(QueryType type, int value) : type(type), value(value) {}
+    BrokerQuery(BrokerQueryType type, int value) : type(type), value(value) {}
 };
 
 //Forward declarations
-struct Creature;
+struct BrokerCreature;
 struct Modifier;
 
 //Broker: coordinates the chain of modifiers
-struct Game
+struct BrokerGame
 {
     std::vector<Modifier*> modifiers;
 
     void add_modifier(Modifier* modifier);
-    void handle_query(Creature& creature, Query& query);
+    void handle_query(BrokerCreature& creature, BrokerQuery& query);
 };
 
 //Base Modifier: can be chained
 struct Modifier
 {
-    Game& game;
-    Creature& creature;
+    BrokerGame& game;
+    BrokerCreature& creature;
 
-    Modifier(Game& game, Creature& creature) : game(game), creature(creature)
+    Modifier(BrokerGame& game, BrokerCreature& creature) : game(game), creature(creature)
     {
         game.add_modifier(this);
     }
 
-    virtual void handle(Query& query) {}
+    virtual void handle(BrokerQuery& query) {}
 };
 
-void Game::add_modifier(Modifier* modifier)
+void BrokerGame::add_modifier(Modifier* modifier)
 {
     modifiers.push_back(modifier);
 }
 
-void Game::handle_query(Creature& creature, Query& query)
+void BrokerGame::handle_query(BrokerCreature& creature, BrokerQuery& query)
 {
     for (auto modifier : modifiers)
     {
@@ -69,30 +69,30 @@ void Game::handle_query(Creature& creature, Query& query)
 }
 
 //Creature whose stats can be modified
-struct Creature
+struct BrokerCreature
 {
     std::string name;
     int base_attack, base_defense;
-    Game& game;
+    BrokerGame& game;
 
-    Creature(Game& game, const std::string& name, int attack, int defense)
+    BrokerCreature(BrokerGame& game, const std::string& name, int attack, int defense)
         : name(name), base_attack(attack), base_defense(defense), game(game) {}
 
     int get_attack() const
     {
-        Query q{QueryType::attack, base_attack};
-        game.handle_query(const_cast<Creature&>(*this), q);
+        BrokerQuery q{BrokerQueryType::attack, base_attack};
+        game.handle_query(const_cast<BrokerCreature&>(*this), q);
         return q.value;
     }
 
     int get_defense() const
     {
-        Query q{QueryType::defense, base_defense};
-        game.handle_query(const_cast<Creature&>(*this), q);
+        BrokerQuery q{BrokerQueryType::defense, base_defense};
+        game.handle_query(const_cast<BrokerCreature&>(*this), q);
         return q.value;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const Creature& c)
+    friend std::ostream& operator<<(std::ostream& os, const BrokerCreature& c)
     {
         return os << c.name << " [attack: " << c.get_attack()
                   << ", defense: " << c.get_defense() << "]";
@@ -102,12 +102,12 @@ struct Creature
 //Concrete modifiers
 struct DoubleAttackModifier : Modifier
 {
-    DoubleAttackModifier(Game& game, Creature& creature)
+    DoubleAttackModifier(BrokerGame& game, BrokerCreature& creature)
         : Modifier(game, creature) {}
 
-    void handle(Query& query) override
+    void handle(BrokerQuery& query) override
     {
-        if (query.type == QueryType::attack)
+        if (query.type == BrokerQueryType::attack)
         {
             query.value *= 2;
             std::cout << "  [DoubleAttackModifier applied]" << std::endl;
@@ -119,12 +119,12 @@ struct IncreaseDefenseModifier : Modifier
 {
     int bonus;
 
-    IncreaseDefenseModifier(Game& game, Creature& creature, int bonus)
+    IncreaseDefenseModifier(BrokerGame& game, BrokerCreature& creature, int bonus)
         : Modifier(game, creature), bonus(bonus) {}
 
-    void handle(Query& query) override
+    void handle(BrokerQuery& query) override
     {
-        if (query.type == QueryType::defense)
+        if (query.type == BrokerQueryType::defense)
         {
             query.value += bonus;
             std::cout << "  [IncreaseDefenseModifier +" << bonus << " applied]" << std::endl;
@@ -134,10 +134,10 @@ struct IncreaseDefenseModifier : Modifier
 
 struct NoBonusesModifier : Modifier
 {
-    NoBonusesModifier(Game& game, Creature& creature)
+    NoBonusesModifier(BrokerGame& game, BrokerCreature& creature)
         : Modifier(game, creature) {}
 
-    void handle(Query& query) override
+    void handle(BrokerQuery& query) override
     {
         std::cout << "  [NoBonusesModifier: blocking all bonuses]" << std::endl;
         //Resets to base - effectively cancels all previous modifiers
@@ -154,50 +154,47 @@ struct NoBonusesModifier : Modifier
 // - Goblins get +1 Defense for every other Goblin in play
 ////////////////////////////////////////////////////////////////////////////////
 
-struct Creature2;
-struct Game2
+struct Creature;
+struct Game
 {
-    std::vector<Creature2*> creatures;
+    std::vector<Creature*> creatures;
 };
 
 struct StatQuery
 {
     enum Statistic { attack, defense } statistic;
     int result;
+    Creature* querier;
 };
 
-struct Creature2
+struct Creature
 {
 protected:
-    Game2& game;
+    Game& game;
     int base_attack, base_defense;
 
 public:
-    Creature2(Game2 &game, int base_attack, int base_defense)
-        : game(game), base_attack(base_attack), base_defense(base_defense)
-    {
-        game.creatures.push_back(this);
-    }
+    Creature(Game &game, int base_attack, int base_defense) : game(game), base_attack(base_attack),
+                                                              base_defense(base_defense) {}
 
     virtual int get_attack() = 0;
     virtual int get_defense() = 0;
 
     virtual void handle_query(StatQuery& query) = 0;
 
-    virtual ~Creature2() = default;
+    virtual ~Creature() = default;
 };
 
-class Goblin : public Creature2
+class Goblin : public Creature
 {
 public:
-    Goblin(Game2 &game, int base_attack, int base_defense)
-        : Creature2(game, base_attack, base_defense) {}
+    Goblin(Game &game, int base_attack, int base_defense) : Creature(game, base_attack, base_defense) {}
 
-    Goblin(Game2 &game) : Creature2(game, 1, 1) {}
+    Goblin(Game &game) : Creature(game, 1, 1) {}
 
     int get_attack() override
     {
-        StatQuery q{StatQuery::attack, base_attack};
+        StatQuery q{StatQuery::attack, base_attack, this};
         for (auto creature : game.creatures)
         {
             creature->handle_query(q);
@@ -207,7 +204,7 @@ public:
 
     int get_defense() override
     {
-        StatQuery q{StatQuery::defense, base_defense};
+        StatQuery q{StatQuery::defense, base_defense, this};
         for (auto creature : game.creatures)
         {
             creature->handle_query(q);
@@ -217,7 +214,10 @@ public:
 
     void handle_query(StatQuery& query) override
     {
-        //Each other goblin gives +1 defense
+        //Don't contribute to your own query (only OTHER goblins give bonus)
+        if (query.querier == this) return;
+
+        //Each goblin gives +1 defense to others
         if (query.statistic == StatQuery::defense)
         {
             query.result++;
@@ -228,11 +228,14 @@ public:
 class GoblinKing : public Goblin
 {
 public:
-    GoblinKing(Game2 &game) : Goblin(game, 3, 3) {}
+    GoblinKing(Game &game) : Goblin(game, 3, 3) {}
 
     void handle_query(StatQuery& query) override
     {
-        //GoblinKing gives +1 attack to other goblins (not itself)
+        //Don't contribute to your own query
+        if (query.querier == this) return;
+
+        //GoblinKing gives +1 attack to other goblins
         if (query.statistic == StatQuery::attack)
         {
             query.result++;
@@ -250,9 +253,9 @@ int main(const int argc,const char *argv[])
     std::cout << "\033[92m" << "\nChain of Responsibility (Broker Chain) : 26 April 2026\n"
               << "\033[0m" << std::endl;
 
-    Game game;
+    BrokerGame game;
 
-    Creature goblin(game, "Goblin", 10, 5);
+    BrokerCreature goblin(game, "Goblin", 10, 5);
     std::cout << "Base creature: " << goblin << std::endl;
 
     std::cout << "\nAdding DoubleAttackModifier..." << std::endl;
@@ -263,7 +266,7 @@ int main(const int argc,const char *argv[])
     IncreaseDefenseModifier extra_defense(game, goblin, 3);
     std::cout << goblin << std::endl;
 
-    Creature dragon(game, "Dragon", 50, 30);
+    BrokerCreature dragon(game, "Dragon", 50, 30);
     std::cout << "\n--- New creature: " << dragon << std::endl;
 
     std::cout << "\nAdding DoubleAttackModifier to Dragon..." << std::endl;
@@ -279,21 +282,21 @@ int main(const int argc,const char *argv[])
               << "\033[0m" << std::endl;
 
     //Test 1: Single goblin
-    Game2 game1;
+    Game game1;
     Goblin goblin1(game1);
     std::cout << "Test 1 - Single goblin:" << std::endl;
     std::cout << "  Attack: " << goblin1.get_attack() << " (expected: 1)" << std::endl;
     std::cout << "  Defense: " << goblin1.get_defense() << " (expected: 1)" << std::endl;
 
     //Test 2: Three goblins
-    Game2 game2;
+    Game game2;
     Goblin g2(game2), g3(game2), g4(game2);
     std::cout << "\nTest 2 - Three goblins:" << std::endl;
     std::cout << "  Each goblin: " << g2.get_attack() << "/" << g2.get_defense()
               << " (expected: 1/3)" << std::endl;
 
     //Test 3: GoblinKing with goblins
-    Game2 game3;
+    Game game3;
     Goblin g5(game3), g6(game3), g7(game3);
     GoblinKing king(game3);
     std::cout << "\nTest 3 - 3 Goblins + GoblinKing:" << std::endl;
