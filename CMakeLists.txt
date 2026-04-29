@@ -24,6 +24,7 @@ set(EXECUTABLES
     flyweight
     proxy
     chain_of_responsibility
+    command
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
