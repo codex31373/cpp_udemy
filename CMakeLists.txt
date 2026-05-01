@@ -25,6 +25,7 @@ set(EXECUTABLES
     proxy
     chain_of_responsibility
     command
+    interpreter
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
