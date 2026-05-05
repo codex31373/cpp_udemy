@@ -26,6 +26,7 @@ set(EXECUTABLES
     chain_of_responsibility
     command
     interpreter
+    iterator
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
