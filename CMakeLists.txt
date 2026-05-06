@@ -28,6 +28,7 @@ set(EXECUTABLES
     interpreter
     iterator
     mediator
+    memento
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
