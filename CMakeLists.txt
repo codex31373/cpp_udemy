@@ -27,6 +27,7 @@ set(EXECUTABLES
     command
     interpreter
     iterator
+    mediator
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)

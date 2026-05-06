@@ -45,14 +45,14 @@ int main(const int argc,const char *argv[])
     std::cout << "\033[92m" << "\nIterator : 5 May 2026\n"
               << "\033[0m" << std::endl;
 
-    //Test preorder traversal
-    //       1
-    //      / \
-    //     2   3
-    //    / \
-    //   4   5
-    //
-    // Expected preorder: 1, 2, 4, 5, 3
+    /*Test preorder traversal
+           1
+          / \
+         2   3
+        / \
+       4   5
+    
+    Expected preorder: 1, 2, 4, 5, 3*/
 
     Node<int> n4{4}, n5{5}, n3{3};
     Node<int> n2{2, &n4, &n5};
