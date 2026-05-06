@@ -1,13 +1,58 @@
-# This is repo for udemy cpp tasks and exercies
-# v 0.02
+# C++ Design Patterns
 
-# vs_code launch.json contents for lldb debug
+Educational implementations of GoF (Gang of Four) design patterns in modern C++20. Each pattern includes a practical example and a coding exercise from the Udemy C++ course.
+
+## Patterns Covered
+
+### Creational Patterns
+| Pattern | File | Description |
+|---------|------|-------------|
+| **SOLID Principles** | `solid.cpp` | Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion |
+| **Builder** | `builder.cpp` | Construct complex objects step by step |
+| **Factory** | `factory.cpp` | Create objects without specifying exact class |
+| **Prototype** | `prototype.cpp` | Clone existing objects |
+| **Singleton** | `singleton.cpp` | Ensure only one instance exists |
+
+### Structural Patterns
+| Pattern | File | Description |
+|---------|------|-------------|
+| **Adapter** | `adapter.cpp` | Convert interface to another interface |
+| **Bridge** | `bridge.cpp` | Separate abstraction from implementation |
+| **Composite** | `composite.cpp` | Tree structures, part-whole hierarchies |
+| **Decorator** | `decorator.cpp` | Add behavior dynamically without subclassing |
+| **Facade** | `facade.cpp` | Simplified interface to complex subsystem |
+| **Flyweight** | `flyweight.cpp` | Share common state between many objects |
+| **Proxy** | `proxy.cpp` | Placeholder to control access to another object |
+
+### Behavioral Patterns
+| Pattern | File | Description |
+|---------|------|-------------|
+| **Chain of Responsibility** | `chain_of_responsibility.cpp` | Pass requests along a chain of handlers |
+| **Command** | `command.cpp` | Encapsulate requests as objects |
+| **Interpreter** | `interpreter.cpp` | Evaluate language grammar |
+| **Iterator** | `iterator.cpp` | Traverse aggregate without exposing internals |
+| **Mediator** | `mediator.cpp` | Central hub for component communication |
+
+## Build
 
 ```bash
+mkdir -p build && cd build
+cmake ..
+cmake --build .
+```
+
+## Run a Pattern
+
+```bash
+./build/flyweight
+./build/mediator
+./build/command
+```
+
+## VS Code Debug Config
+
+```json
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -20,33 +65,13 @@
         }
     ]
 }
-
-
-mmcli -m 0 --command=AT+CFUN=1
-
-
-mmcli -m 0 -d
-mmcli -m 0 --set-power-state-on //  Set full power state in the modem
-mmcli -m 0 -e
-
-And then restart your device
-
-APN: internet.a1.bg
-
-
-nmcli connection add type gsm ifname ttyUSB3 con-name 5g
-nmcli connection modify id "5g" gsm.apn "internet.a1.bg"
-
-nmcli connection up id "5g"
-
-nmcli connection show 5g
-
-mmcli -m 3 --command=AT+CGDATA="PPP",internet.a1.bg
-
-
-sudo rm /etc/NetworkManager/system-connections/5g
-sudo systemctl restart NetworkManager
-
-mmcli -m 0 --command=AT+CGDCONT?
-
 ```
+
+## Requirements
+
+- CMake 3.10+
+- C++20 compatible compiler (GCC 10+, Clang 12+, MSVC 2019+)
+
+## License
+
+MIT
