@@ -29,6 +29,7 @@ set(EXECUTABLES
     iterator
     mediator
     memento
+    observer
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
