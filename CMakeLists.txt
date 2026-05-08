@@ -31,6 +31,7 @@ set(EXECUTABLES
     memento
     observer
     state
+    strategy
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
