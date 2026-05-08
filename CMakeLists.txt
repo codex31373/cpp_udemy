@@ -30,6 +30,7 @@ set(EXECUTABLES
     mediator
     memento
     observer
+    state
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
