@@ -32,6 +32,7 @@ set(EXECUTABLES
     observer
     state
     strategy
+    template_method
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
