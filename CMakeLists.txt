@@ -33,6 +33,7 @@ set(EXECUTABLES
     state
     strategy
     template_method
+    visitor
 )
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
