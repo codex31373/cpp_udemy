@@ -28,10 +28,16 @@ Educational implementations of GoF (Gang of Four) design patterns in modern C++2
 | Pattern | File | Description |
 |---------|------|-------------|
 | **Chain of Responsibility** | `chain_of_responsibility.cpp` | Pass requests along a chain of handlers |
-| **Command** | `command.cpp` | Encapsulate requests as objects |
-| **Interpreter** | `interpreter.cpp` | Evaluate language grammar |
+| **Command** | `command.cpp` | Encapsulate requests as objects, support undo/redo |
+| **Interpreter** | `interpreter.cpp` | Evaluate language grammar with AST |
 | **Iterator** | `iterator.cpp` | Traverse aggregate without exposing internals |
 | **Mediator** | `mediator.cpp` | Central hub for component communication |
+| **Memento** | `memento.cpp` | Capture and restore object state, undo/redo stacks |
+| **Observer** | `observer.cpp` | Notify dependents of state changes automatically |
+| **State** | `state.cpp` | Alter behavior when object's state changes |
+| **Strategy** | `strategy.cpp` | Family of interchangeable algorithms |
+| **Template Method** | `template_method.cpp` | Skeleton algorithm with customizable steps |
+| **Visitor** | `visitor.cpp` | Double-dispatch operations on object structures |
 
 ## Build
 
@@ -44,9 +50,14 @@ cmake --build .
 ## Run a Pattern
 
 ```bash
+./build/singleton
 ./build/flyweight
 ./build/mediator
 ./build/command
+./build/observer
+./build/state
+./build/strategy
+./build/visitor
 ```
 
 ## VS Code Debug Config
